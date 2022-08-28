@@ -7,6 +7,13 @@ public class flip : MonoBehaviour
     SpriteRenderer sprite;
     bool FaceRight = true;
 
+    public GameObject bullet;
+    GameObject bulletClone;
+
+    public Transform leftSpawn;
+
+    public float speed;
+
     void Start()
     {
         sprite = GetComponent<SpriteRenderer>();
@@ -16,6 +23,7 @@ public class flip : MonoBehaviour
     void Update()
     {
         FlipPlayer();
+        Fire();
     }
     void FlipPlayer()
     {
@@ -28,6 +36,22 @@ public class flip : MonoBehaviour
         {
             sprite.flipX = true;
             FaceRight = false;
+        }
+    }
+    void Fire()
+    {
+        if (Input.GetMouseButtonDown(0) && FaceRight)
+        {
+            bulletClone = Instantiate(bullet, transform.position, transform.rotation);
+            bulletClone.GetComponent<Rigidbody2D>().velocity = transform.right * speed;
+            Destroy(bulletClone , 2f);
+         }
+        else if (Input.GetMouseButtonDown(0) && !FaceRight)
+        {
+            bulletClone = Instantiate(bullet, leftSpawn.position, leftSpawn.rotation);
+            bulletClone.GetComponent<Rigidbody2D>().velocity = transform.right * -speed;
+            Destroy(bulletClone, 2f);
+
         }
     }
 }
